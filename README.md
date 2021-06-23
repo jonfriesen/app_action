@@ -10,9 +10,10 @@ Add this step to a job to automatically build an image from the Dockerfile and p
 
 ```yaml
     - name: Publish Image to Container Registry
-      uses: ripplr-io/docr-docker-publish@v1
+      uses: 
       with:
         image_path: registry-path/image-path
+        app_image_name: App
 ```
 
 # Inputs
