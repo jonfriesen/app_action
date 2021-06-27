@@ -1,4 +1,4 @@
-[
+"[
 	{
 	  "name": "frontend",
 	  "repository": "registry.digitalocean.com/<my-registry>/<my-image>",
@@ -14,4 +14,4 @@
 	  "repository": "registry.digitalocean.com/<my-registry>/<my-image>",
 	  "tag": "test2"
 	}
-  ]
+  ]"

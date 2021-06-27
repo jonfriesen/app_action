@@ -8,6 +8,7 @@ import (
 func TestReadFileFrom(t *testing.T) {
 	//Test to check if read is working correctly
 	//For this I will read test1 file and verify the output
+	os.Remove("_test")
 	testFileInput := `"[
 	{
 	  "name": "frontend",
@@ -42,5 +43,6 @@ func TestReadFileFrom(t *testing.T) {
 	if string(jsonFile) != testFileInput {
 		t.Error("mismatched file: ", testFileInput)
 	}
+	os.Remove("_test")
 
 }
