@@ -41,7 +41,11 @@ func getAllRepo(location string) ([]UpdatedRepo, error) {
 		return nil, err
 	}
 	var allRepos []UpdatedRepo
-	json.Unmarshal(byteValue, &allRepos)
+	err = json.Unmarshal(byteValue, &allRepos)
+	if err != nil {
+		log.Fatal("Error in parsing json data from file: ", err)
+		return nil, err
+	}
 	return allRepos, nil
 
 }

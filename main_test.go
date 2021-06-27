@@ -2,14 +2,13 @@ package main
 
 import (
 	"os"
+	"reflect"
 	"testing"
 )
 
-func TestReadFileFrom(t *testing.T) {
-	//Test to check if read is working correctly
-	//For this I will read test1 file and verify the output
+func testingFileCreation() (string, error) {
 	os.Remove("_test")
-	testFileInput := `"[
+	testFileInput := `[
 	{
 	  "name": "frontend",
 	  "repository": "registry.digitalocean.com/<my-registry>/<my-image>",
@@ -25,23 +24,65 @@ func TestReadFileFrom(t *testing.T) {
 	  "repository": "registry.digitalocean.com/<my-registry>/<my-image>",
 	  "tag": "test2"
 	}
-  ]"`
+  ]`
 	testFile := []byte(testFileInput)
-	file, err := os.Create("test")
+	file, err := os.Create("_test")
 	if err != nil {
-		t.Error("Not able to create a file", err)
+		return "", err
 	}
 	_, err = file.Write(testFile)
 	if err != nil {
-		t.Error("Not able to write on a file", err)
+		return "", err
 	}
-	jsonFile, err := readFileFrom("test")
+	return testFileInput, nil
+}
+func TestReadFileFrom(t *testing.T) {
+	//Test to check if read is working correctly
+	//For this I will read test1 file and verify the output
+
+	testFileInput, err := testingFileCreation()
+	if err != nil {
+		t.Error("Error in file Creation: ", err)
+	}
+	jsonFile, err := readFileFrom("_test")
 	if err != nil {
 		t.Error("Unable to read file", err)
 	}
-
 	if string(jsonFile) != testFileInput {
 		t.Error("mismatched file: ", testFileInput)
+	}
+	os.Remove("_test")
+
+}
+
+func TestGetAllRepo(t *testing.T) {
+	_, err := testingFileCreation()
+	if err != nil {
+		t.Error("Error in file Creation: ", err)
+	}
+	allRepo, err := getAllRepo("_test")
+	if err != nil {
+		t.Error("Error in parsing json data")
+	}
+	var temp = []UpdatedRepo{
+		{
+			"frontend",
+			"registry.digitalocean.com/<my-registry>/<my-image>",
+			"latest",
+		},
+		{
+			"landing",
+			"registry.digitalocean.com/<my-registry>/<my-image>",
+			"test1",
+		},
+		{
+			"api",
+			"registry.digitalocean.com/<my-registry>/<my-image>",
+			"test2",
+		},
+	}
+	if !reflect.DeepEqual(allRepo, temp) {
+		t.Errorf("Error in retrieving struct from json")
 	}
 	os.Remove("_test")
 
