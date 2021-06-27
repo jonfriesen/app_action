@@ -20,16 +20,14 @@ type UpdatedRepo struct {
 func readFileFrom(fileLocation string) ([]byte, error) {
 	jsonFile, err := os.Open(fileLocation)
 	if err != nil {
-		log.Fatal(err)
-		os.Exit(1)
+		log.Fatal("Error in opening the file", err)
 		return []byte{}, err
 	}
 	defer jsonFile.Close()
 
 	byteValue, _ := ioutil.ReadAll(jsonFile)
 	if err != nil {
-		log.Fatal(err)
-		os.Exit(1)
+		log.Fatal("Error in reading from file: ", err)
 		return []byte{}, err
 	}
 	return byteValue, err
@@ -39,8 +37,7 @@ func readFileFrom(fileLocation string) ([]byte, error) {
 func getAllRepo(location string) ([]UpdatedRepo, error) {
 	byteValue, err := readFileFrom(location)
 	if err != nil {
-		log.Fatal(err)
-		os.Exit(1)
+		log.Fatal("Error in reading from file: ", err)
 		return nil, err
 	}
 	var allRepos []UpdatedRepo
@@ -51,9 +48,9 @@ func getAllRepo(location string) ([]UpdatedRepo, error) {
 
 func main() {
 	//import and return json object of changed repo
-	all_files, err := getAllRepo("../test1.json")
+	all_files, err := getAllRepo("test1.json")
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Error in Retrieving json data: ", err)
 		os.Exit(1)
 	}
 	for key, _ := range all_files {
@@ -64,7 +61,6 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 			os.Exit(1)
-
 		}
 
 	}
