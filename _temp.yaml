@@ -1,0 +1,61 @@
+name: sample-monorepo
+services:
+  - name: api
+    github:
+      repo: digitalocean/sample-monorepo
+      branch: main
+      deploy_on_push: true
+    source_dir: api
+    environment_slug: go
+    instance_size_slug: basic-xxs
+    instance_count: 1
+    http_port: 8080
+    routes:
+      - path: /api
+  - name: webhook
+    github:
+      repo: digitalocean/sample-monorepo
+      branch: main
+      deploy_on_push: true
+    source_dir: webhook
+    environment_slug: go
+    instance_size_slug: basic-xxs
+    instance_count: 1
+    http_port: 8080
+    routes:
+      - path: /webhook
+static_sites:
+  - name: frontend
+    github:
+      repo: digitalocean/sample-monorepo
+      branch: main
+      deploy_on_push: true
+    source_dir: frontend
+    environment_slug: html
+    index_document: hello.html
+    error_document: error.html
+    routes:
+      - path: /
+  - name: landing
+    github:
+      repo: digitalocean/sample-monorepo
+      branch: main
+      deploy_on_push: true
+    dockerfile_path: landing/Dockerfile
+    source_dir: landing
+    output_dir: /app
+    error_document: error.html
+    routes:
+      - path: /landing
+workers:
+  - name: worker
+    github:
+      repo: digitalocean/sample-monorepo
+      branch: main
+      deploy_on_push: true
+    dockerfile_path: worker/Dockerfile
+    run_command: sh -c "cat ./ok && sleep infinity"
+    source_dir: worker
+    instance_size_slug: basic-xxs
+    instance_count: 1
+region: nyc

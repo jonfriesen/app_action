@@ -2,8 +2,7 @@
 
 # Grab the app ID from the in-repo app spec.
 INPUT_DATA="${{ inputs.list_of_image.all_images}}"
-INPUT_DATA=$(yq eval ".all_images" test1.yml)
-
+INPUT_DATA=$(yq eval ".all_images" test1.yml) 
 
 APP_NAME="${{ inputs.app_image_name }}"
 JQ_ARGS=".[] | select(.spec.name == \"${APP_NAME}\") | .id"

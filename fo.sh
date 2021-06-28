@@ -2,11 +2,10 @@
 
 ${{ inputs.list_of_image}} > test1.json
 
-APP_NAME="${{ inputs.app_name }}"
+APP_NAME="sample-monorepo"
 JQ_ARGS=".[] | select(.spec.name == \"${APP_NAME}\") | .id"
 APP_ID="$(doctl app list -ojson | jq -r "${JQ_ARGS}")"
-
-doctl app get ${APP_ID} -ojson | yq eval -P - '[0].spec' > _temp.yaml
+doctl app get ${APP_ID} -ojson | yq eval -P '.[0].spec' - > _temp.yaml
 ./main
 doctl app update ${APP_ID} --spec _temp.yaml
 

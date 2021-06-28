@@ -1,6 +1,6 @@
 [
   {
-    "name": "param",
+    "name": "frontend",
     "repository": "registry.digitalocean.com/<my-registry>/<my-image>",
     "tag": "latest"
   },
