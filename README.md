@@ -4,29 +4,37 @@ This action uses [doctl](https://github.com/digitalocean/action-doctl) to upload
 PRs are welcome.
 
 # Usage
-Add this step to a job to automatically build an image from the Dockerfile and publish it with a unique tag (based on the commit SHA). The image will also be tagged with `latest`.
+Add this step to deploy your application on DigitalOcean App Platform using DigitalOcean Container Registry.
 
 ### Example:
 
 ```yaml
-    - name: Publish Image to Container Registry
+    - name: DigitalOcean App Platform deployment
       uses: 
       with:
-        image_path: registry-path/image-path
-        app_image_name: App
+        app_name: App Platform Demo
+        list_of_image: [
+                          {
+                            "name": "frontend",
+                            "repository": "registry.digitalocean.com/<my-registry>/<my-image>",
+                            "tag": "latest"
+                          },
+                          {
+                            "name": "landing",
+                            "repository": "registry.digitalocean.com/<my-registry>/<my-image>",
+                            "tag": "test1"
+                          },
+                          {
+                            "name": "api",
+                            "repository": "registry.digitalocean.com/<my-registry>/<my-image>",
+                            "tag": "test2"
+                          }
+                        ]
 ```
 
 # Inputs
-- `image_path` - (**Required**) Image path in the registry. In the format `registry-name/image-name`.
-- `sha_size` - (Optional) Number of characters from the commit SHA. Default is `'8'`
-- `dockerfile` - (Optional) The path + name of the Dockerfile you want to build (-f flag). Default is `'Dockerfile'` Example: `./docker/dev.Dockerfile`.
-- `docker_build_context` - (Optional) The `docker build` context. Default is `'.'`.
-- `app_image_name` - Name of the app on App Platform.
-
-# Outputs
-The urls of the uploaded images will be accessible with the variables:
-- `image_url` - Url of the uploaded image with the SHA tag.
-- `image_latest_url` - Url of the uploaded image with the latest tag.
+- `app_name` - Name of the app on App Platform.
+- `list_of_image` - List of json object for providing information about name,repository and tag of the image in docr.(By default tag of the image is latest)
 
 ## License
 

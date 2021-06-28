@@ -1,0 +1,17 @@
+[
+  {
+    "name": "param",
+    "repository": "registry.digitalocean.com/<my-registry>/<my-image>",
+    "tag": "latest"
+  },
+  {
+    "name": "adam",
+    "repository": "registry.digitalocean.com/<my-registry>/<my-image>",
+    "tag": "latest"
+  },
+  {
+    "name": "josh",
+    "repository": "registry.digitalocean.com/<my-registry>/<my-image>",
+    "tag": "latest"
+  }
+]

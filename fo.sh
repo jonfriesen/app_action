@@ -1,21 +1,15 @@
 #!/bin/sh -l
 
-# Grab the app ID from the in-repo app spec.
-INPUT_DATA="${{ inputs.list_of_image.all_images}}"
-INPUT_DATA=$(yq eval ".all_images" test1.yml)
+${{ inputs.list_of_image}} > test1.json
 
-
-APP_NAME="${{ inputs.app_image_name }}"
+APP_NAME="${{ inputs.app_name }}"
 JQ_ARGS=".[] | select(.spec.name == \"${APP_NAME}\") | .id"
 APP_ID="$(doctl app list -ojson | jq -r "${JQ_ARGS}")"
-doctl app get ${APP_ID} -ojson | yq eval -P - '[0].spec' > /tmp/app.actual.yaml
-cat /tmp/app.actual.yaml
-if ! diff /tmp/app.actual.yaml .do/app.yaml; then
-    echo "=> Updating app spec from .do/app.yaml"
-    doctl app update ${APP_ID} --spec .do/app.yaml
-fi
 
-# Trigger a deployment using the app ID.
+doctl app get ${APP_ID} -ojson | yq eval -P - '[0].spec' > _temp.yaml
+./main
+doctl app update ${APP_ID} --spec _temp.yaml
+
 echo "=> Deploying app ${APP_NAME} (${APP_ID})..."
 doctl app create-deployment $APP_ID
 
