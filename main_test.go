@@ -87,3 +87,6 @@ func TestGetAllRepo(t *testing.T) {
 	os.Remove("_test")
 
 }
+func TestExecCommand(t *testing.T) {
+
+}
