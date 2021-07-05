@@ -20,7 +20,35 @@ runs:
       run: apk add -U curl git jq && \
             wget -q -O /usr/bin/yq $(wget -q -O - https://api.github.com/repos/mikefarah/yq/releases/44514558 | jq -r '.assets[] | select(.name == "yq_linux_amd64") | .browser_download_url') && \
             chmod +x /usr/bin/yq && \
-            
-    - name: Update image on App Platform
+    - name: RETRIEVE DATA FROM INPUT
+      shell: bash
+      run:  ${{ inputs.list_of_image}} > test1
+    - name: Declaring all initial variables
+      id: variables
+      shell: bash
+      run: |
+        echo "::set-output name=APP_NAME::inputs.app_name"
+        echo "::set-output name=JQ_ARGS::.[] | select(.spec.name == \"${{steps.variables.APP_NAME}}\") | .id"
+        echo "::set-output name=APP_ID::$(doctl app list -ojson | jq -r "${{steps.variables.JQ_ARGS}}")"
+    - name: GET APP_SPEC FROM SERVER
+      shell: bash
+      run: |
+        doctl app get ${{steps.variables.APP_ID}} -ojson | yq eval -P '.[0].spec' - > app.yaml
+        echo "=> Deploying app ${{steps.variables.APP_NAME}} (${{steps.variables.APP_ID}})..."
+    - name: UPDATE APP SPEC
+      shell: bash
+      run: |
+        chmod +x main
+        ./main
+    - name: UPDATE APP SPEC TO THE SERVER
+      shell: bash
+      run: |
+        doctl app update ${{steps.variables.APP_ID}} --spec app.yaml
+    - name: CREATE DEPLOYMENT
+      shell: bash
+      run: |
+        doctl app create-deployment ${{steps.variables.APP_ID}}
+
+    - name: WAIT FOR THE LATEST DEPLOYMENT TO BE ACTIVE OF FAIL
       shell: bash
       run: ./fo.sh
