@@ -17,6 +17,9 @@ runs:
   using: composite
   steps:
     - name: DEPLOY TO DigitalOcean
-      shell: bash
       run: |
-        ./main
+        chmod +x ${{ GITHUB_ACTION_PATH }}/main
+      shell: bash
+    - name: RUN MAIN
+      run: main
+      shell: bash
