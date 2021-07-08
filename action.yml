@@ -16,10 +16,9 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: actions/checkout@v1
     - name: DEPLOY TO DigitalOcean
       run: |
-        chmod +x $GITHUB_WORKSPACE/main
+        chmod +x $GITHUB_ACTION_PATH/main
       shell: bash
     - name: RUN MAIN
       run: main
