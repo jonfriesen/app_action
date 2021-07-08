@@ -16,10 +16,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: RETRIEVE DATA FROM INPUT
-      shell: bash
-      run:  ${{ inputs.list_of_image}} > _temp
-    - name: RUN APP SPEC
+    - name: DEPLOY TO DigitalOcean
       shell: bash
       run: |
         ./main

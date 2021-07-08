@@ -5,6 +5,7 @@ PRs are welcome.
 
 # Usage
 Add this step to deploy your application on DigitalOcean App Platform using DigitalOcean Container Registry.
+To deploy application to DigitalOcean without DOCR update omit list_of_image
 
 ### Example:
 
