@@ -22,3 +22,4 @@ runs:
         ls -al
         chmod +x main
         ./main
+      shell: bash
