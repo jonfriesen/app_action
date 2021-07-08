@@ -10,7 +10,8 @@ inputs:
     required: true
   list_of_image:
     description: list of json object containing name, repository and tag of the digitalocean container registry to update
-    required: true
+    required: false
+    default: ""
 
 runs:
   using: composite

@@ -2,15 +2,15 @@
 
 # ${{ inputs.list_of_image}} > test1.json
 
-APP_NAME="sample-monorepo"
-JQ_ARGS=".[] | select(.spec.name == \"${APP_NAME}\") | .id"
-APP_ID="$(doctl app list -ojson | jq -r "${JQ_ARGS}")"
-doctl app get ${APP_ID} -ojson | yq eval -P '.[0].spec' - > app.yaml
-./main
-doctl app update ${APP_ID} --spec app.yaml
+# APP_NAME="sample-monorepo"
+# JQ_ARGS=".[] | select(.spec.name == \"${APP_NAME}\") | .id"
+# APP_ID="$(doctl app list -ojson | jq -r "${JQ_ARGS}")"
+# doctl app get ${APP_ID} -ojson | yq eval -P '.[0].spec' - > app.yaml
+# ./main
+# doctl app update ${APP_ID} --spec app.yaml
 
-echo "=> Deploying app ${APP_NAME} (${APP_ID})..."
-doctl app create-deployment $APP_ID
+# echo "=> Deploying app ${APP_NAME} (${APP_ID})..."
+# doctl app create-deployment $APP_ID
 
 # Wait for latest deployment to be active or failed.
 while true; do
