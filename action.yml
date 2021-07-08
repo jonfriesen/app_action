@@ -18,7 +18,7 @@ runs:
   steps:
     - name: DEPLOY TO DigitalOcean
       run: |
-        chmod +x ${{ GITHUB_ACTION_PATH }}/main
+        chmod +x $GITHUB_ACTION_PATH/main
       shell: bash
     - name: RUN MAIN
       run: main
